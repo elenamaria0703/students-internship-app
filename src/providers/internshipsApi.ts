@@ -6,6 +6,7 @@ const internships: InternshipProps[] = [
         title: "Job1",
         description: "Desc",
         location: "Bucuresti",
+        domain: 'Software Development',
         duration: 120,
         salary: 1000,
         type: 'Remote'
@@ -53,12 +54,13 @@ export const getInternships: () => InternshipProps[] = () => {
     // return withLogs(axios.get(issueUrl, authConfig(token)), 'getInternships');
 }
 
-export const createInternship: (internship: InternshipProps) => any[] = (internship) => {
-    return [];
+export const createInternship: (internship: InternshipProps) => InternshipProps = (internship) => {
+    internship._id = Math.random()
+    return internship;
     // return withLogs(axios.post(issueUrl, issue, authConfig(token)), 'createInternship');
 }
 
-export const updateInternship: (internship: InternshipProps) => any[] = (internship) => {
-    return [];
+export const updateInternship: (internship: InternshipProps) => InternshipProps = (internship) => {
+    return internship;
     // return withLogs(axios.put(`${issueUrl}/${issue._id}`, issue, authConfig(token)), 'updateInternship');
 }

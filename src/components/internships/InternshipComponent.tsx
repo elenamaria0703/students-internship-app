@@ -3,12 +3,13 @@ import {FaClock, FaDollarSign, FaMapMarkedAlt, FaUsers} from 'react-icons/fa';
 import {Badge, Button, Card, Col, ProgressBar, Row} from "react-bootstrap";
 import {InternshipProps} from "./InternshipProps";
 
-type onTitleClickFn = () => void;
+type onClickFn = () => void;
 interface internshipComponentProps extends InternshipProps{
-    onTitleClick: onTitleClickFn
+    onTitleClick: onClickFn,
+    onUpdateClick: onClickFn
 }
 
-function InternshipComponent( {onTitleClick, ...props}: internshipComponentProps ) {
+function InternshipComponent( {onTitleClick, onUpdateClick, ...props}: internshipComponentProps ) {
     return(
         <Card className={"mt-3"}>
             <Card.Body>
@@ -16,7 +17,9 @@ function InternshipComponent( {onTitleClick, ...props}: internshipComponentProps
                     <Col md={10}>
                         <Card.Title>
                             <Card.Link href={"#"} onClick={onTitleClick} className={"text-decoration-none text-dark"}>
-                                {props.title} {props.type && <Badge pill bg={"secondary"}>{props.type}</Badge>}
+                                {props.title}
+                                {props.type && <Badge className={"mx-1"} pill bg={"secondary"}>{props.type}</Badge>}
+                                {props.domain && <Badge className={"mx-2"} pill bg={"secondary"}>{props.domain}</Badge>}
                             </Card.Link>
                         </Card.Title>
                         <Card.Subtitle className={"text-muted"}>
@@ -34,7 +37,7 @@ function InternshipComponent( {onTitleClick, ...props}: internshipComponentProps
                 </Row>
             </Card.Body>
             <Card.Footer className={"bg-transparent"}>
-                <Card.Link href={"#"} className={"text-dark text-decoration-none"}>Update</Card.Link>
+                <Card.Link href={"#"} onClick={onUpdateClick} className={"text-dark text-decoration-none"}>Update</Card.Link>
                 <Card.Link href={"#"} className={"text-dark text-decoration-none"}>Delete</Card.Link>
             </Card.Footer>
         </Card>

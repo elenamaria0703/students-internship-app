@@ -16,8 +16,9 @@ function InternshipDetailsModal(props: internshipModalProps) {
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
                         {props.internship?.title}
-                        {props.internship?.type && <Badge pill bg={"secondary"} className={"mx-1"}>{props.internship.type}</Badge>}
                     </Modal.Title>
+                    {props.internship?.type && <Badge pill bg={"secondary"} className={"mx-1"}>{props.internship.type}</Badge>}
+                    {props.internship?.domain && <Badge pill bg={"secondary"} className={"mx-1"}>{props.internship.domain}</Badge>}
                 </Modal.Header>
                 <Modal.Body>
                     <Row className={"text-muted text-center"}>
