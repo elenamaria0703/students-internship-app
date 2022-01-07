@@ -8,7 +8,7 @@ import {
 import NavBar from './components/utils/NavBar';
 import AccountProvider from './providers/AccountProvider';
 import UserAuthTestComponent from './components/auth/UserAuthTestComponent';
-import InternshipsRootComponent from "./components/offers/InternshipsRootComponent";
+import InternshipsRootComponent from "./components/internships/InternshipsRootComponent";
 
 function App() {
   return (

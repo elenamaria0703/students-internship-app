@@ -1,15 +1,23 @@
 import React from "react";
 import {FaClock, FaDollarSign, FaMapMarkedAlt, FaUsers} from 'react-icons/fa';
 import {Badge, Button, Card, Col, ProgressBar, Row} from "react-bootstrap";
+import {InternshipProps} from "./InternshipProps";
 
-const InternshipComponent: React.FC = ( props ) => {
+type onTitleClickFn = () => void;
+interface internshipComponentProps extends InternshipProps{
+    onTitleClick: onTitleClickFn
+}
+
+function InternshipComponent( {onTitleClick, ...props}: internshipComponentProps ) {
     return(
         <Card className={"mt-3"}>
             <Card.Body>
                 <Row>
                     <Col md={10}>
                         <Card.Title>
-                            Internship Title <Badge pill bg={"secondary"}>Type</Badge>
+                            <Card.Link href={"#"} onClick={onTitleClick} className={"text-decoration-none text-dark"}>
+                                Internship Title <Badge pill bg={"secondary"}>Type</Badge>
+                            </Card.Link>
                         </Card.Title>
                         <Card.Subtitle className={"text-muted"}>
                             <span className={"mx-1"}><FaMapMarkedAlt/> Location</span>
