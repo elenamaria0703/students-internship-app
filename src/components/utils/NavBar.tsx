@@ -6,9 +6,7 @@ const NavBar: React.FC = () => {
   const [modalShow, setModalShow] = useState(false);
   const [authType, setAuthType] = useState<AuthType>(AuthType.LOGIN);
   const { userId, getUser} = useContext(AccountContext);
-  useEffect(() => {
-      getUser?.();
-  }, [])
+
   return(
     <Navbar bg="dark" variant="dark">
       <Container>

@@ -1,10 +1,11 @@
 export interface InternshipProps{
-    _id?: bigint,
+    _id?: number,
     title?: String,
     description?: String,
     domain?: String,
     location?: String,
-    duration?: bigint,
-    salary?: bigint,
-    type?: String
+    duration?: number,
+    salary?: number,
+    type?: String,
+    candidates?: Object[]
 }

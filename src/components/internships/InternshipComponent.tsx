@@ -16,18 +16,20 @@ function InternshipComponent( {onTitleClick, ...props}: internshipComponentProps
                     <Col md={10}>
                         <Card.Title>
                             <Card.Link href={"#"} onClick={onTitleClick} className={"text-decoration-none text-dark"}>
-                                Internship Title <Badge pill bg={"secondary"}>Type</Badge>
+                                {props.title} {props.type && <Badge pill bg={"secondary"}>{props.type}</Badge>}
                             </Card.Link>
                         </Card.Title>
                         <Card.Subtitle className={"text-muted"}>
-                            <span className={"mx-1"}><FaMapMarkedAlt/> Location</span>
-                            <span className={"mx-1"}><FaClock/> Duration</span>
-                            <span className={"mx-1"}><FaDollarSign/> Salary</span>
+                            <Row>
+                                <Col md={2} className={"mx-1"}><FaMapMarkedAlt className={"mx-1"}/>{props.location || ' - '}</Col>
+                            <Col md={2} className={"mx-1"}><FaClock className={"mx-1"}/>{props.duration || ' - '}</Col>
+                            <Col className={"mx-1"}><FaDollarSign className={"mx-1"}/>{props.salary || ' - '}</Col>
+                            </Row>
                         </Card.Subtitle>
                     </Col>
                     <Col md={2} className={"my-auto text-center"}>
                         <Button> Apply Now</Button>
-                        <div className={"fw-lighter small text-muted"}><FaUsers/> 80 candidates</div>
+                        <div className={"fw-lighter small text-muted"}><FaUsers/>{props.candidates?.length && props.candidates.length> 0 ? ` ${props.candidates.length} candidates` : ' No candidates yet'}</div>
                     </Col>
                 </Row>
             </Card.Body>
