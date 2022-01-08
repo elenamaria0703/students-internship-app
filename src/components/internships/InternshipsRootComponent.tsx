@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {FormEvent, useContext, useState} from "react";
 import {Button, Card, Col, Container, Pagination, Row} from "react-bootstrap";
 import InternshipComponent from "./InternshipComponent";
 import InternshipDetailsModal from "./InternshipDetailsModal";
@@ -17,7 +17,7 @@ const initialState: InternshipsRootInterface = {
     internship: undefined
 }
 const InternshipsRootComponent: React.FC = () =>{
-    const {internships} = useContext(InternshipContext)
+    const {internships, delete_Internship} = useContext(InternshipContext)
     const [modalState, setModalState] = useState(initialState);
 
     const openModalWithInternship = (internshipId: number|undefined, showModal: boolean, showFormModal: boolean) => {
@@ -28,6 +28,10 @@ const InternshipsRootComponent: React.FC = () =>{
             showFormModal: showFormModal,
             internship: internship
         })
+    }
+
+    const processDelete = (internship: InternshipProps) => {
+        delete_Internship && delete_Internship(internship)
     }
 
    return (
@@ -52,8 +56,10 @@ const InternshipsRootComponent: React.FC = () =>{
                        }}
                        onUpdateClick={() => {
                            openModalWithInternship(e.id, false, true)
-                       }
-                       }/>)
+                       }}
+                       onDeleteClick={() => {
+                           processDelete(e)
+                       }}/>)
                    :
                    <h5 className={"my-2"}>No internships to display</h5>
                }

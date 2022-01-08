@@ -10,7 +10,7 @@ interface internshipModalProps{
     internship?: InternshipProps
 }
 function InternshipFormModal(props: internshipModalProps) {
-    const { saving, savingError, saveInternship } = useContext(InternshipContext)
+    const { saving, savingError, save_Internship } = useContext(InternshipContext)
 
     const [title, setTitle] = useState(props.internship?.title || "")
     const [description, setDescription] = useState(props.internship?.description || "")
@@ -42,7 +42,7 @@ function InternshipFormModal(props: internshipModalProps) {
             salary: salary,
             duration: duration
         }
-        saveInternship && saveInternship(newInternship).then(() => props.onHide())
+        save_Internship && save_Internship(newInternship).then(() => props.onHide())
     }
 
     return (

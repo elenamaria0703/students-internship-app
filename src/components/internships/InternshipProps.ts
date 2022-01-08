@@ -7,5 +7,5 @@ export interface InternshipProps{
     duration?: number,
     salary?: number,
     type?: string,
-    candidates?: Object[]
+    allStudents?: Object[]
 }

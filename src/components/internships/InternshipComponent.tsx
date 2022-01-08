@@ -6,10 +6,11 @@ import {InternshipProps} from "./InternshipProps";
 type onClickFn = () => void;
 interface internshipComponentProps extends InternshipProps{
     onTitleClick: onClickFn,
-    onUpdateClick: onClickFn
+    onUpdateClick: onClickFn,
+    onDeleteClick: onClickFn
 }
 
-function InternshipComponent( {onTitleClick, onUpdateClick, ...props}: internshipComponentProps ) {
+function InternshipComponent( {onTitleClick, onUpdateClick, onDeleteClick, ...props}: internshipComponentProps ) {
     return(
         <Card className={"mt-3"}>
             <Card.Body>
@@ -32,13 +33,13 @@ function InternshipComponent( {onTitleClick, onUpdateClick, ...props}: internshi
                     </Col>
                     <Col md={2} className={"my-auto text-center"}>
                         <Button> Apply Now</Button>
-                        <div className={"fw-lighter small text-muted"}><FaUsers/>{props.candidates?.length && props.candidates.length> 0 ? ` ${props.candidates.length} candidates` : ' No candidates yet'}</div>
+                        <div className={"fw-lighter small text-muted"}><FaUsers/>{props.allStudents?.length && props.allStudents.length> 0 ? ` ${props.allStudents.length} candidates` : ' No candidates yet'}</div>
                     </Col>
                 </Row>
             </Card.Body>
             <Card.Footer className={"bg-transparent"}>
                 <Card.Link href={"#"} onClick={onUpdateClick} className={"text-dark text-decoration-none"}>Update</Card.Link>
-                <Card.Link href={"#"} className={"text-dark text-decoration-none"}>Delete</Card.Link>
+                <Card.Link href={"#"} onClick={onDeleteClick} className={"text-dark text-decoration-none"}>Delete</Card.Link>
             </Card.Footer>
         </Card>
     )
