@@ -46,7 +46,7 @@ const reducer: (state: InternshipsState, action: ActionProps) => InternshipsStat
             case SAVE_INTERNSHIP_SUCCEEDED:
                 const internships = [...(state.internships || [])];
                 const internship = payload.internship;
-                const index = internships.findIndex(it => it._id === internship._id);
+                const index = internships.findIndex(it => it.id === internship.id);
                 if (index === -1) {
                     internships.splice(0, 0, internship);
                 } else {
@@ -94,10 +94,10 @@ export const InternshipProvider: React.FC<InternshipProviderProps> = ({ children
             try {
                 console.log('fetchInternships started');
                 dispatch({ type: FETCH_INTERNSHIPS_STARTED });
-                const internships = await getInternships();
+                const response = await getInternships();
                 console.log('fetchInternships succeeded');
                 if (!canceled) {
-                    dispatch({ type: FETCH_INTERNSHIPS_SUCCEEDED, payload: { internships } });
+                    dispatch({ type: FETCH_INTERNSHIPS_SUCCEEDED, payload: {internships :response.data }});
                 }
             } catch (error) {
                 console.log('fetchInternships failed');
@@ -110,9 +110,9 @@ export const InternshipProvider: React.FC<InternshipProviderProps> = ({ children
         try {
             console.log('saveInternship started');
             dispatch({ type: SAVE_INTERNSHIP_STARTED });
-            const savedInternship = await (internship._id ? updateInternship(internship) : createInternship(internship));
+            const response = await (internship.id ? updateInternship(internship) : createInternship(internship));
             console.log('saveInternship succeeded');
-            dispatch({ type: SAVE_INTERNSHIP_SUCCEEDED, payload: { internship: savedInternship } });
+            dispatch({ type: SAVE_INTERNSHIP_SUCCEEDED, payload: { internship: response.data } });
         } catch (error) {
             console.log('saveInternship failed');
             dispatch({ type: SAVE_INTERNSHIP_FAILED, payload: { error } });

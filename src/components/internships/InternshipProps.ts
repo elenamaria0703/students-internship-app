@@ -1,5 +1,5 @@
 export interface InternshipProps{
-    _id?: number,
+    id?: number,
     title?: string,
     description?: string,
     domain?: string,

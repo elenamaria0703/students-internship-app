@@ -21,7 +21,7 @@ const InternshipsRootComponent: React.FC = () =>{
     const [modalState, setModalState] = useState(initialState);
 
     const openModalWithInternship = (internshipId: number|undefined, showModal: boolean, showFormModal: boolean) => {
-        let internship = internshipId ? internships?.find(it => it._id === internshipId) : undefined
+        let internship = internshipId ? internships?.find(it => it.id === internshipId) : undefined
         setModalState({
             ...modalState,
             showModal: showModal,
@@ -40,7 +40,7 @@ const InternshipsRootComponent: React.FC = () =>{
            <Row>
                {internships?.length && internships.length > 0 ? internships.map((e, i) =>
                    <InternshipComponent
-                       key={e._id}
+                       key={e.id}
                        title={e.title}
                        domain={e.domain}
                        location={e.location}
@@ -48,10 +48,10 @@ const InternshipsRootComponent: React.FC = () =>{
                        salary={e.salary}
                        type={e.type}
                        onTitleClick={() => {
-                           openModalWithInternship(e._id, true, false)
+                           openModalWithInternship(e.id, true, false)
                        }}
                        onUpdateClick={() => {
-                           openModalWithInternship(e._id, false, true)
+                           openModalWithInternship(e.id, false, true)
                        }
                        }/>)
                    :

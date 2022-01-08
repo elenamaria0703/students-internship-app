@@ -1,66 +1,17 @@
 import {InternshipProps} from "../components/internships/InternshipProps";
+import axios from 'axios';
 
-const internships: InternshipProps[] = [
-    {
-        _id: 1,
-        title: "Job1",
-        description: "Desc",
-        location: "Bucuresti",
-        domain: 'Software Development',
-        duration: 120,
-        salary: 1000,
-        type: 'Remote'
-    },
-    {
-        _id: 2,
-        title: "Job2",
-        description: "Desc2",
-        location: "Cluj-Napoca",
-        duration: 120,
-        salary: 1500,
-        type: 'Remote'
-    },
-    {
-        _id: 3,
-        title: "Job3",
-        description: "Desc3",
-        location: "Cluj-Napoca",
-        duration: 120,
-        salary: 1550,
-        type: 'Remote'
-    },
-    {
-        _id: 4,
-        title: "Job4",
-        description: "Desc4",
-        location: "Cluj-Napoca",
-        duration: 120,
-        salary: 1500,
-        type: 'Remote'
-    },
-    {
-        _id: 5,
-        title: "Job5",
-        description: "Desc5",
-        location: "Cluj-Napoca",
-        duration: 120,
-        salary: 1500,
-        type: 'Remote'
-    }
-]
+const baseUrl = "http://localhost:8080/api/internship"
 
-export const getInternships: () => InternshipProps[] = () => {
-    return internships;
-    // return withLogs(axios.get(issueUrl, authConfig(token)), 'getInternships');
+export const getInternships: () => Promise<any> = () => {
+    return axios.get(`${baseUrl}/all`);
 }
 
-export const createInternship: (internship: InternshipProps) => InternshipProps = (internship) => {
-    internship._id = Math.random()
-    return internship;
-    // return withLogs(axios.post(issueUrl, issue, authConfig(token)), 'createInternship');
+export const createInternship: (internship: InternshipProps) => Promise<any> = (internship) => {
+    return axios.post(`${baseUrl}/new`, internship);
 }
 
 export const updateInternship: (internship: InternshipProps) => InternshipProps = (internship) => {
     return internship;
-    // return withLogs(axios.put(`${issueUrl}/${issue._id}`, issue, authConfig(token)), 'updateInternship');
+    // return withLogs(axios.put(`${issueUrl}/${issue.id}`, issue, authConfig(token)), 'updateInternship');
 }

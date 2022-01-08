@@ -33,7 +33,7 @@ function InternshipFormModal(props: internshipModalProps) {
     const processSave = (event: FormEvent) => {
         event.preventDefault()
         let newInternship = {
-            _id: props.internship?._id,
+            id: props.internship?.id,
             title: title,
             description: description,
             domain: domain,
