@@ -17,9 +17,8 @@ export const createInternship: (internship: InternshipProps) => Promise<any> = (
     return axios.post(`${baseUrl}/new`, internship);
 }
 
-export const updateInternship: (internship: InternshipProps) => InternshipProps = (internship) => {
-    return internship;
-    // return withLogs(axios.put(`${issueUrl}/${issue.id}`, issue, authConfig(token)), 'updateInternship');
+export const updateInternship: (internship: InternshipProps) => Promise<any> = (internship) => {
+    return axios.put(`${baseUrl}/update`, internship);
 }
 
 export const deleteInternship: (internship: InternshipProps) => Promise<any> = (internship) => {
