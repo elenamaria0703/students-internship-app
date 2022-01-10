@@ -12,10 +12,16 @@ export enum AuthType{
   SIGNUP = "SIGNUP",
   LOGIN = "LOGIN"
 }
+export enum RegistrationType{
+  STUDENT = "STUDENT",
+  COMPANY = "COMPANY"
+}
+
 interface modalProps{
-    show: boolean,
-    type: AuthType,
-    onHide: hideFn
+  show: boolean,
+  type: AuthType,
+  registration_type: RegistrationType,
+  onHide: hideFn
 }
 
 
@@ -67,7 +73,7 @@ function AuthModal(props: modalProps) {
               cookiePolicy={'single_host_origin'}
             />
             <hr/>
-            {props.type == AuthType.SIGNUP ?  <SignUp/> : <Login/> }
+            {props.type == AuthType.SIGNUP ?  <SignUp type={props.registration_type}/> : <Login/> }
           </Modal.Body>
         </div>
       }

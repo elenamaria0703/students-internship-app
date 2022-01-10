@@ -5,6 +5,8 @@ import InternshipDetailsModal from "./InternshipDetailsModal";
 import {InternshipContext} from "../../providers/InternshipProvider";
 import {InternshipProps} from "./InternshipProps";
 import InternshipFormModal from "./InternshipFormModal";
+import { AccountContext } from "../../providers/AccountProvider";
+import { RegistrationType } from "../auth/AuthModal";
 
 interface InternshipsRootInterface{
     showModal: boolean,
@@ -17,7 +19,8 @@ const initialState: InternshipsRootInterface = {
     internship: undefined
 }
 const InternshipsRootComponent: React.FC = () =>{
-    const {internships, delete_Internship} = useContext(InternshipContext)
+    const {internships, delete_Internship, apply_Internship} = useContext(InternshipContext)
+    const { userId, userType} = useContext(AccountContext);
     const [modalState, setModalState] = useState(initialState);
 
     const openModalWithInternship = (internshipId: number|undefined, showModal: boolean, showFormModal: boolean) => {
@@ -34,11 +37,15 @@ const InternshipsRootComponent: React.FC = () =>{
         delete_Internship && delete_Internship(internship)
     }
 
+    const processApplyNow = (internship: InternshipProps) =>{
+        apply_Internship && userId && apply_Internship(internship, userId)
+    }
+
    return (
        <Container className={"mt-2 mb-5"}>
            <Row>
                <Col><h2>All Internships</h2></Col>
-               <Col className={"text-end my-auto"}><Button onClick={() =>{openModalWithInternship(undefined, false, true)}}>New Internship Offer</Button></Col>
+               {userType == RegistrationType.COMPANY && <Col className={"text-end my-auto"}><Button onClick={() =>{openModalWithInternship(undefined, false, true)}}>New Internship Offer</Button></Col>}
            </Row>
            <hr/>
            <Row>
@@ -51,6 +58,7 @@ const InternshipsRootComponent: React.FC = () =>{
                        duration={e.duration}
                        salary={e.salary}
                        type={e.type}
+                       allStudents={e.allStudents}
                        onTitleClick={() => {
                            openModalWithInternship(e.id, true, false)
                        }}
@@ -59,7 +67,10 @@ const InternshipsRootComponent: React.FC = () =>{
                        }}
                        onDeleteClick={() => {
                            processDelete(e)
-                       }}/>)
+                       }}
+                       onApplyClick={() => {
+                            processApplyNow(e)
+                        }}/>)
                    :
                    <h5 className={"my-2"}>No internships to display</h5>
                }

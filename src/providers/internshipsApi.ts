@@ -1,7 +1,7 @@
 import {InternshipProps} from "../components/internships/InternshipProps";
 import axios from 'axios';
 
-const baseUrl = "http://localhost:8080/api/internship"
+const baseUrl = "http://e9fa-188-27-131-111.ngrok.io/api/internship"
 const config = {
     headers: {
         'Access-Control-Allow-Origin': '*',

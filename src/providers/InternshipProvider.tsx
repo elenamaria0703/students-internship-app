@@ -6,6 +6,7 @@ import {createInternship, deleteInternship, getInternships, updateInternship} fr
 
 
 type SaveInternshipFn = (internship: InternshipProps) => Promise<any>;
+type ApplyInternshipFn = (internship: InternshipProps, userId: string) => Promise<any>;
 type DeleteInternshipFn = (internship: InternshipProps) => Promise<any>;
 
 export interface InternshipsState{
@@ -18,6 +19,7 @@ export interface InternshipsState{
     deleting: boolean,
     deletingError?: Error | null,
     delete_Internship?: DeleteInternshipFn,
+    apply_Internship?: ApplyInternshipFn
 }
 interface ActionProps {
     type: string,
@@ -39,6 +41,7 @@ const SAVE_INTERNSHIP_FAILED = 'SAVE_INTERNSHIP_FAILED';
 const DELETE_INTERNSHIP_STARTED = 'DELETE_INTERNSHIP_STARTED';
 const DELETE_INTERNSHIP_SUCCEEDED = 'DELETE_INTERNSHIP_SUCCEEDED';
 const DELETE_INTERNSHIP_FAILED = 'DELETE_INTERNSHIP_FAILED';
+const APPLIED_TO_INTERNSHIP = 'APPLIED_TO_INTERNSHIP'
 
 const reducer: (state: InternshipsState, action: ActionProps) => InternshipsState =
     (state, {type, payload}) => {
@@ -76,6 +79,13 @@ const reducer: (state: InternshipsState, action: ActionProps) => InternshipsStat
                 return { ...state, internships: initial_internships, deleting: false };
             case DELETE_INTERNSHIP_FAILED:
                 return { ...state, deletingError: payload.error, deleting: false };
+            case APPLIED_TO_INTERNSHIP:
+                const init_internships = [...(state.internships || [])];
+                const apply_internship = payload.internship;
+                const apply_index = init_internships.findIndex(it => it.id === apply_internship.id);
+                init_internships[apply_index] = apply_internship;
+                console.log("apply:", apply_internship)
+                return { ...state, internships: init_internships}
             default:
                 return state;
         }
@@ -94,8 +104,9 @@ export const InternshipProvider: React.FC<InternshipProviderProps> = ({ children
 
     const save_Internship = useCallback<SaveInternshipFn>(saveInternshipCallback, []);
     const delete_Internship = useCallback<DeleteInternshipFn>(deleteInternshipCallback, []);
+    const apply_Internship = useCallback<ApplyInternshipFn>(applyInternshipCallback, []);
 
-    const value = { internships, fetching, fetchingError, saving, savingError, save_Internship, deleting, deletingError, delete_Internship };
+    const value = { internships, fetching, fetchingError, saving, savingError, save_Internship, deleting, deletingError, delete_Internship, apply_Internship };
 
     useEffect(() => {
         getUser?.();
@@ -110,16 +121,26 @@ export const InternshipProvider: React.FC<InternshipProviderProps> = ({ children
         }
 
         async function fetchInternships() {
-            if (!userId) {
-                return;
-            }
+            // if (!userId) {
+            //     return;
+            // }
             try {
                 console.log('fetchInternships started');
                 dispatch({ type: FETCH_INTERNSHIPS_STARTED });
                 const response = await getInternships();
                 console.log('fetchInternships succeeded');
                 if (!canceled) {
-                    dispatch({ type: FETCH_INTERNSHIPS_SUCCEEDED, payload: {internships :response.data }});
+                    var  internships = response.data
+                    for(var i=0;i<window.localStorage.length;i++){
+                        var key = window.localStorage.key(i)
+                        if(key && !key?.includes("Cognito") && !key?.includes("user_type")){
+                          var value = window.localStorage.getItem(key);
+                          const index = internships.findIndex((it: InternshipProps) => it.id?.toString() === key);
+                          if (index && value)
+                            internships[index].allStudents = JSON.parse(value)
+                        }
+                    }
+                    dispatch({ type: FETCH_INTERNSHIPS_SUCCEEDED, payload: {internships}});
                 }
             } catch (error) {
                 console.log('fetchInternships failed');
@@ -151,6 +172,23 @@ export const InternshipProvider: React.FC<InternshipProviderProps> = ({ children
         } catch (error) {
             console.log('deleteInternship failed');
             dispatch({ type: DELETE_INTERNSHIP_FAILED, payload: { error } });
+        }
+    }
+
+    async function applyInternshipCallback(internship: InternshipProps, userId: string){
+        if(internship.id){
+            var candidates = window.localStorage.getItem(internship.id.toString());
+            if(candidates){
+                var candidates_arr = JSON.parse(candidates)
+                candidates_arr.push(userId)
+                internship.allStudents = candidates_arr
+                window.localStorage.setItem(internship.id.toString(), JSON.stringify(candidates_arr));
+                dispatch({ type: APPLIED_TO_INTERNSHIP, payload: {internship}});
+            }else{
+                window.localStorage.setItem(internship.id.toString(), JSON.stringify([userId]));
+                internship.allStudents = [userId]
+                dispatch({ type: APPLIED_TO_INTERNSHIP, payload: {internship}});
+            }
         }
     }
     

@@ -15,12 +15,10 @@ function App() {
   return (
     <Router>
       <AccountProvider>
-          <InternshipProvider>
-              <NavBar/>
-              <InternshipsRootComponent/>
-          </InternshipProvider>
-        {/* This component is just for testing purposes. */}
-        {/*<UserAuthTestComponent/>*/}
+        <InternshipProvider>
+          <NavBar/>
+          <InternshipsRootComponent/>
+        </InternshipProvider>
       </AccountProvider>
     </Router>
   );

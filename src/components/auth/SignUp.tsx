@@ -3,7 +3,9 @@ import React, { useContext, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
 import { AccountContext } from '../../providers/AccountProvider';
-const SignUp: React.FC =()=>{
+import { RegistrationType } from './AuthModal';
+
+const SignUp: React.FC<{type: RegistrationType}> = (props)=>{ 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +20,7 @@ const SignUp: React.FC =()=>{
           setConfirmPassword('');
         }else{
           setConfirmError(null);
-          signup?.(email,password);
+          signup?.(email,password,props.type);
         }
     }
 

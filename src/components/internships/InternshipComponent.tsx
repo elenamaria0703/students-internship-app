@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import {FaClock, FaDollarSign, FaMapMarkedAlt, FaUsers} from 'react-icons/fa';
 import {Badge, Button, Card, Col, ProgressBar, Row} from "react-bootstrap";
 import {InternshipProps} from "./InternshipProps";
+import { AccountContext } from "../../providers/AccountProvider";
+import { RegistrationType } from "../auth/AuthModal";
 
 type onClickFn = () => void;
 interface internshipComponentProps extends InternshipProps{
     onTitleClick: onClickFn,
     onUpdateClick: onClickFn,
-    onDeleteClick: onClickFn
+    onDeleteClick: onClickFn,
+    onApplyClick: onClickFn
 }
 
-function InternshipComponent( {onTitleClick, onUpdateClick, onDeleteClick, ...props}: internshipComponentProps ) {
+function InternshipComponent( {onTitleClick, onUpdateClick, onDeleteClick, onApplyClick, ...props}: internshipComponentProps ) {
+    const { userId, userType} = useContext(AccountContext);
+
+    function ShowApplyButton(){
+       return userType == RegistrationType.STUDENT && (props.allStudents?.length == 0 || props.allStudents?.find(id => id === userId) == -1)
+    }
     return(
         <Card className={"mt-3"}>
             <Card.Body>
@@ -32,15 +40,16 @@ function InternshipComponent( {onTitleClick, onUpdateClick, onDeleteClick, ...pr
                         </Card.Subtitle>
                     </Col>
                     <Col md={2} className={"my-auto text-center"}>
-                        <Button> Apply Now</Button>
-                        <div className={"fw-lighter small text-muted"}><FaUsers/>{props.allStudents?.length && props.allStudents.length> 0 ? ` ${props.allStudents.length} candidates` : ' No candidates yet'}</div>
+                        {ShowApplyButton() && <Button onClick={onApplyClick}> Apply Now</Button>}
+                        {!ShowApplyButton() && userId && !(userType == RegistrationType.COMPANY) && <Button disabled> Already Registered</Button>}
+                        {userId && <div className={"fw-lighter small text-muted"}><FaUsers/>{props.allStudents?.length && props.allStudents.length> 0 ? ` ${props.allStudents.length} candidates` : ' No candidates yet'}</div>}
                     </Col>
                 </Row>
             </Card.Body>
-            <Card.Footer className={"bg-transparent"}>
+            {userType == RegistrationType.COMPANY && <Card.Footer className={"bg-transparent"}>
                 <Card.Link href={"#"} onClick={onUpdateClick} className={"text-dark text-decoration-none"}>Update</Card.Link>
                 <Card.Link href={"#"} onClick={onDeleteClick} className={"text-dark text-decoration-none"}>Delete</Card.Link>
-            </Card.Footer>
+            </Card.Footer>}
         </Card>
     )
 }
